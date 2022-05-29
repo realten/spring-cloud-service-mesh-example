@@ -1,0 +1,43 @@
+# server.port - 클라이언트 포트번호
+server:
+  port: 80
+  shutdown: graceful
+
+spring:
+  application:
+    name: gateway
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}-${random.uuid}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+# Spring Cloud Gateway yml 설정 방법
+
+# spring.cloud.gateway - Spring Cloud Gateway 설정
+## routes.id - Route Id
+## routes.uri - Route Url Path
+## routes.predicates - HTTP 요청의 조건 정의
+## routes.predicates.Path - HTTP 요청의 Path 패턴 조건
+## routes.filters - HTTP 요청 또는 HTTP 응답에 대한 수정
+## routes.filters.RewritePath - HTTP 요청의 Path 패턴을 Rewrite
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: fooRoute
+#          uri: http://realten.com:8081
+#          predicates:
+#            - Path=/api/foo/**
+#          filters:
+#            - RewritePath=/api/foo(?<segment>/?.*), /foo/$\{segment}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
