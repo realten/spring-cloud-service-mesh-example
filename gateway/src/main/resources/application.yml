@@ -25,19 +25,32 @@ eureka:
 ## routes.predicates.Path - HTTP 요청의 Path 패턴 조건
 ## routes.filters - HTTP 요청 또는 HTTP 응답에 대한 수정
 ## routes.filters.RewritePath - HTTP 요청의 Path 패턴을 Rewrite
-#spring:
 #  cloud:
 #    gateway:
 #      routes:
-#        - id: fooRoute
-#          uri: http://realten.com:8081
+#        - id: route1
+#          uri: http://localhost:8081
 #          predicates:
-#            - Path=/api/foo/**
+#            - Path=/api/**
 #          filters:
-#            - RewritePath=/api/foo(?<segment>/?.*), /foo/$\{segment}
+#            - RewritePath=/api(?<segment>/?.*), /$\{segment}
 
 management:
+  endpoint:
+    health:
+      show-details: always
   endpoints:
     web:
       exposure:
         include: "*"
+    gateway:
+      enabled: true
+  health:
+    circuitbreakers:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
