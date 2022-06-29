@@ -3,18 +3,50 @@ server:
   shutdown: graceful
 
 spring:
+  profiles:
+    active: single-eureka
   application:
     name: eureka-server
-
-eureka:
-  client:
-    register-with-eureka: false # 해당 인스턴스가 Eureka 서버에 등록해야 하는지에 대한 여부
-    fetch-registry: false # 해당 클라이언트가 Eureka 서버에서  Eureka 레지스트리 정보를 가져와야하는지에 대한 여부
-    service-url:
-      defaultZone: http://localhost:8761/eureka
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+--- #single eureka
+spring:
+  config:
+    activate:
+      on-profile: single-eureka
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false # 해당 인스턴스가 Eureka 서버에 등록해야 하는지에 대한 여부
+    fetch-registry: false # 해당 클라이언트가 Eureka 서버에서  Eureka 레지스트리 정보를 가져와야하는지에 대한 여부
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+
+--- # two peer eureka
+
+spring:
+  config:
+    activate:
+      on-profile: two-peer-eureka
+
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    service-url:
+      defaultZone: http://peer2/eureka
+
+# 아래는 peer2 Eureka Server에서 설정해야하는 부분으로 서로 연결되어 있으면 서로 등록을 동기화한다.
+#eureka:
+#  instance:
+#    hostname: peer1
+#  client:
+#    service-url:
+#      defaultZone: http://peer1/eureka

@@ -25,10 +25,13 @@ ext {
 }
 
 dependencies {
+    /* Spring Cloud Netflix Eureka Server */
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 
     /* Spring Boot Actuator */
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
