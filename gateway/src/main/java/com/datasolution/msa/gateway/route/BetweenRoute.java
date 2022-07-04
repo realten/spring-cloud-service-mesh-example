@@ -34,7 +34,7 @@ public class BetweenRoute {
             LocalDateTime beforeDateTime = LocalDateTime.now().withHour(18).withMinute(0).withSecond(0).withNano(0);
             ZonedDateTime afterZonedDateTime = ZonedDateTime.of(afterDateTime, ZoneId.of("Asia/Seoul"));
             ZonedDateTime beforeZonedDateTime = ZonedDateTime.of(beforeDateTime, ZoneId.of("Asia/Seoul"));
-            BooleanSpec booleanSpec = p.path("/api/*/route-sample/between").and()
+            BooleanSpec booleanSpec = p.path("/api/route-sample/between").and()
                     .after(afterZonedDateTime).and()
                     .before(beforeZonedDateTime);
 
@@ -52,7 +52,7 @@ public class BetweenRoute {
 
     private Function<GatewayFilterSpec, UriSpec> gatewayFilterSpecUriSpecFunction() {
         return gatewayFilterSpecUriSpecFunction -> {
-            gatewayFilterSpecUriSpecFunction.stripPrefix(2).filter(gatewayFilter());
+            gatewayFilterSpecUriSpecFunction.stripPrefix(1).filter(gatewayFilter());
             return gatewayFilterSpecUriSpecFunction;
         };
     }

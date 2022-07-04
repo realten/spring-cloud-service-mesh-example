@@ -11,24 +11,35 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 @Slf4j
 public class RouteLocatorRegistry {
-    private final BeforeRoute beforeRoute;
-    private final AfterRoute afterRoute;
-    private final BetweenRoute betweenRoute;
     private final ABTestRoute abTestRoute;
+
+    private final AfterRoute afterRoute;
+    private final BeforeRoute beforeRoute;
+    private final BetweenRoute betweenRoute;
     private final CookieRoute cookieRoute;
+    private final HeaderRoute headerRoute;
+    private final QueryRoute queryRoute;
+    private final WeightRoute weightRoute;
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         RouteLocatorBuilder.Builder routes = builder.routes();
 
-        //Before
-        routes.route("before", beforeRoute.beforeRoute());
         //After
         routes.route("after", afterRoute.afterRoute());
+        //Before
+        routes.route("before", beforeRoute.beforeRoute());
         //Between
         routes.route("between", betweenRoute.betweenRoute());
         //Cookie
         routes.route("cookie", cookieRoute.cookieRoute());
+        //Header
+        routes.route("header", headerRoute.headerRoute());
+        //Query
+        routes.route("query", queryRoute.queryRoute());
+        //Weight
+        routes.route("weight1", weightRoute.weightRoute());
+        routes.route("weight2", weightRoute.weightRoute());
 
 
         //AB TEST

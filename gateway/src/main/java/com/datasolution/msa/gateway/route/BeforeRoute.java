@@ -34,7 +34,7 @@ public class BeforeRoute {
             // 조건절 정의
             LocalDateTime dateTime = LocalDateTime.now().withHour(9).withMinute(0).withSecond(0).withNano(0);
             ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("Asia/Seoul"));
-            BooleanSpec booleanSpec = p.path("/api/*/route-sample/before").and()
+            BooleanSpec booleanSpec = p.path("/api/route-sample/before").and()
                     .before(zonedDateTime);
 
             //filter 정의
@@ -51,7 +51,7 @@ public class BeforeRoute {
 
     private Function<GatewayFilterSpec, UriSpec> gatewayFilterSpecUriSpecFunction() {
         return gatewayFilterSpecUriSpecFunction -> {
-            gatewayFilterSpecUriSpecFunction.stripPrefix(2).filter(gatewayFilter());
+            gatewayFilterSpecUriSpecFunction.stripPrefix(1).filter(gatewayFilter());
             return gatewayFilterSpecUriSpecFunction;
         };
     }
