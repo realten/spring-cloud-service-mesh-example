@@ -1,43 +1,49 @@
 package com.datasolution.msa.gateway.route;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.*;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
-@Slf4j
 @Configuration
-public class CookieRoute {
+@Slf4j
+public class QueryRoute {
+    private String serverUri = "lb://microservice1";
+
     /**
-     * cookie Route<br />
+     * query Route<br />
      * <br />
-     * /api/*&#47;route-sample/cookie 으로 들어오는 경우<br />
-     * Cookie 값에 cookie라는 name과 authinfo라는 값이 있는 경우<br />
+     * /api/route-sample/query 으로 들어오는 경우<br />
+     * QueryString에 microservice 값이 있는 경우<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
      * <br />
-     * URI : LoadBalancing to microservice1 application<br />
+     * URI : LoadBalancing to microservice QueryString value application<br />
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> cookieRoute() {
+    public Function<PredicateSpec, Buildable<Route>> queryRoute() {
         return p -> {
             // 조건절 정의
-            BooleanSpec booleanSpec = p.path("/api/route-sample/cookie").and()
-                    .cookie("cookie", "authinfo");
+            BooleanSpec booleanSpec = p.path("/api/route-sample/query").and()
+                    .query("microservice");
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());
 
             //URI 정의
-            String uri = "";
-            uri = "lb://microservice1";
-            Buildable<Route> routeBuildable = filters.uri(uri);
+            Buildable<Route> routeBuildable = filters.uri(serverUri);
 
             return routeBuildable;
         };
@@ -55,9 +61,27 @@ public class CookieRoute {
             String path = exchange.getRequest().getURI().getPath();
             Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
             log.info("route-id - {}, path - {}", route.getId(), path);
+
+            MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>(exchange.getRequest().getQueryParams());
+
+            URIBuilder uriBuilder = new URIBuilder();
+            uriBuilder.setPath("/route-sample/query");
+            if("microservice1".equals(queryParams.getFirst("microservice"))) {
+                serverUri = "lb://microservice1";
+            } else if("microservice2".equals(queryParams.getFirst("microservice"))) {
+                serverUri = "lb://microservice2";
+            }
+
+            URI uri = exchange.getRequest().getURI();
+            try {
+                uri = uriBuilder.build();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
             String rewritePath = path;
             log.info("rewritePath - {}", rewritePath);
-            ServerHttpRequest request = exchange.getRequest().mutate().path(rewritePath).build();
+                ServerHttpRequest request = exchange.getRequest().mutate().path(rewritePath).uri(uri).build();
             return chain.filter(exchange.mutate().request(request).build());
         };
     }

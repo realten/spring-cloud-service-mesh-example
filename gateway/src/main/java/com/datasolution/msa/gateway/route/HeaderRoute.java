@@ -1,23 +1,29 @@
 package com.datasolution.msa.gateway.route;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.*;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
-@Slf4j
 @Configuration
-public class CookieRoute {
+@Slf4j
+public class HeaderRoute {
     /**
-     * cookie Route<br />
+     * header Route<br />
      * <br />
-     * /api/*&#47;route-sample/cookie 으로 들어오는 경우<br />
-     * Cookie 값에 cookie라는 name과 authinfo라는 값이 있는 경우<br />
+     * /api/route-sample/header 으로 들어오는 경우<br />
+     * Header 값에 header라는 name 값이 있는 경우<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
      * <br />
@@ -25,11 +31,12 @@ public class CookieRoute {
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> cookieRoute() {
+    public Function<PredicateSpec, Buildable<Route>> headerRoute() {
+        Map<String, String> map = new HashMap<>();
         return p -> {
             // 조건절 정의
-            BooleanSpec booleanSpec = p.path("/api/route-sample/cookie").and()
-                    .cookie("cookie", "authinfo");
+            BooleanSpec booleanSpec = p.path("/api/route-sample/header").and()
+                    .header("header");
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());

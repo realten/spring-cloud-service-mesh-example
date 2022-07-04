@@ -32,7 +32,7 @@ public class AfterRoute {
             // 조건절 정의
             LocalDateTime dateTime = LocalDateTime.now().withHour(18).withMinute(0).withSecond(0).withNano(0);
             ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("Asia/Seoul"));
-            BooleanSpec booleanSpec = p.path("/api/*/route-sample/after").and().after(zonedDateTime);
+            BooleanSpec booleanSpec = p.path("/api/route-sample/after").and().after(zonedDateTime);
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());
@@ -48,7 +48,7 @@ public class AfterRoute {
 
     private Function<GatewayFilterSpec, UriSpec> gatewayFilterSpecUriSpecFunction() {
         return gatewayFilterSpecUriSpecFunction -> {
-            gatewayFilterSpecUriSpecFunction.stripPrefix(2).filter(gatewayFilter());
+            gatewayFilterSpecUriSpecFunction.stripPrefix(1).filter(gatewayFilter());
             return gatewayFilterSpecUriSpecFunction;
         };
     }
