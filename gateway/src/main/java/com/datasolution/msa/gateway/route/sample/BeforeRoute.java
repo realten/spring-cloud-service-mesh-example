@@ -1,29 +1,26 @@
-package com.datasolution.msa.gateway.route;
+package com.datasolution.msa.gateway.route.sample;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.utils.URIBuilder;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.*;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.function.Function;
 
-@Configuration
 @Slf4j
-public class HeaderRoute {
+@Configuration
+public class BeforeRoute {
     /**
-     * header Route<br />
+     * Before Route<br />
      * <br />
-     * /api/route-sample/header 으로 들어오는 경우<br />
-     * Header 값에 header라는 name 값이 있는 경우<br />
+     * 9시 이전 /api/route-sample/before으로 들어오는 경우<br />
+     * version-test라는 그룹의 가중치 5<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
      * <br />
@@ -31,12 +28,13 @@ public class HeaderRoute {
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> headerRoute() {
-        Map<String, String> map = new HashMap<>();
+    public Function<PredicateSpec, Buildable<Route>> beforeRoute() {
         return p -> {
             // 조건절 정의
-            BooleanSpec booleanSpec = p.path("/api/route-sample/header").and()
-                    .header("header");
+            LocalDateTime dateTime = LocalDateTime.now().withHour(9).withMinute(0).withSecond(0).withNano(0);
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("Asia/Seoul"));
+            BooleanSpec booleanSpec = p.path("/api/route-sample/before")
+                    .and().before(zonedDateTime);
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());

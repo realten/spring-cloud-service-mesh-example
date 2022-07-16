@@ -14,10 +14,11 @@ configurations {
     }
 }
 
+group 'com.datasolution.msa.frontservice'
+version '1.0-SNAPSHOT'
+
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/snapshot' }
-    maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
@@ -30,16 +31,6 @@ dependencies {
 
     /* Spring Boot Web */
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-    /* Spring Boot WebFlux */
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
-    /* Spring Cloud Netflix Eureka - Client*/
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     /* Lombok */
     compileOnly 'org.projectlombok:lombok'
@@ -54,6 +45,6 @@ dependencyManagement {
     }
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
 }
