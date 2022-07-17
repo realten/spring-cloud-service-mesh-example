@@ -9,7 +9,7 @@
         <script>
             $(document).ready(function() {
                 $.ajax({
-                    url: "http://localhost/api/route-sample/after",
+                    url: "http://localhost:8000/api/route-sample/after",
                     success: function(result) {
                         $("#after > .message").text("message : " + result['message']);
                         $("#after > .exec-time").text("exec-time : " + result['exec-time']);
@@ -20,7 +20,7 @@
                 });
 
                 $.ajax({
-                    url: "http://localhost/api/route-sample/before",
+                    url: "http://localhost:8000/api/route-sample/before",
                     success: function(result) {
                         $("#before > .message").text("message : " + result['message']);
                         $("#before > .exec-time").text("exec-time : " + result['exec-time']);
@@ -32,7 +32,7 @@
                 });
 
                 $.ajax({
-                    url: "http://localhost/api/route-sample/between",
+                    url: "http://localhost:8000/api/route-sample/between",
                     success: function(result) {
                         $("#between > .message").text("message : " + result['message']);
                         $("#between > .exec-time").text("exec-time : " + result['exec-time']);
@@ -43,9 +43,8 @@
                 })
 
                 $.ajax({
-                    url: "http://localhost/api/route-sample/cookie",
-                    method: "GET",
-
+                    url: "http://localhost:8000/api/route-sample/method",
+                    method: "POST",
                     success: function(result) {
                         $("#between > .message").text("message : " + result['message']);
                         $("#between > .exec-time").text("exec-time : " + result['exec-time']);
@@ -85,6 +84,14 @@
             <h1>Between</h1>
         </div>
         <div id="between">
+            <p class="message"></p>
+            <p class="exec-time"></p>
+        </div>
+
+        <div class="page-header">
+            <h1>Method</h1>
+        </div>
+        <div id="method">
             <p class="message"></p>
             <p class="exec-time"></p>
         </div>
