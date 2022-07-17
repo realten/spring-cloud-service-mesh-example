@@ -1,8 +1,8 @@
 package com.datasolution.msa.gateway.route;
 
-import io.github.resilience4j.circuitbreaker.configure.CircuitBreakerConfigurationProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.SpringCloudCircuitBreakerFilterFactory;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.*;
@@ -71,7 +71,20 @@ public class ABTestRoute {
             ServerHttpRequest request = exchange.getRequest().mutate().path(rewritePath).build();
             return chain.filter(exchange.mutate().request(request).build());
         };
+
     }
+
+//    private OrderedGatewayFilter orderedGatewayFilter() {
+//        return new OrderedGatewayFilter((exchange, chain) -> {
+//            String path = exchange.getRequest().getURI().getPath();
+//            Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
+//            log.info("route-id - {}, path - {}", route.getId(), path);
+//            String rewritePath = path;
+//            log.info("rewritePath - {}", rewritePath);
+//            ServerHttpRequest request = exchange.getRequest().mutate().path(rewritePath).build();
+//            return chain.filter(exchange.mutate().request(request).build());
+//        }, 0);
+//    }
 
     public Consumer<SpringCloudCircuitBreakerFilterFactory.Config> springCloudCircuitBreakerFilterFactoryConfigConsumer() {
         return springCloudCircuitBreakerFilterFactoryConfig -> {

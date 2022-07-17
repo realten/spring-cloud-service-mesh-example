@@ -10,12 +10,10 @@ sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/snapshot' }
-    maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-    set('springCloudVersion', "2021.0.3-SNAPSHOT")
+    set('springCloudVersion', "2021.0.3")
 }
 
 dependencies {
@@ -33,6 +31,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

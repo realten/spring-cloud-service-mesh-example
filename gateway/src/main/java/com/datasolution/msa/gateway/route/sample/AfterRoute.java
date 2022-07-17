@@ -1,11 +1,10 @@
-package com.datasolution.msa.gateway.route;
+package com.datasolution.msa.gateway.route.sample;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.*;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
@@ -16,12 +15,11 @@ import java.util.function.Function;
 
 @Slf4j
 @Configuration
-public class BeforeRoute {
+public class AfterRoute {
     /**
-     * Before Route<br />
+     * After Route<br />
      * <br />
-     * 9시 이전 /api/*&#47;route-sample/before으로 들어오는 경우<br />
-     * version-test라는 그룹의 가중치 5<br />
+     * 18시 이후 /api/route-sample/after으로 들어오는 경우<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
      * <br />
@@ -29,13 +27,13 @@ public class BeforeRoute {
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> beforeRoute() {
+    public Function<PredicateSpec, Buildable<Route>> afterRoute() {
         return p -> {
             // 조건절 정의
-            LocalDateTime dateTime = LocalDateTime.now().withHour(9).withMinute(0).withSecond(0).withNano(0);
+            LocalDateTime dateTime = LocalDateTime.now().withHour(18).withMinute(0).withSecond(0).withNano(0);
             ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("Asia/Seoul"));
-            BooleanSpec booleanSpec = p.path("/api/route-sample/before").and()
-                    .before(zonedDateTime);
+            BooleanSpec booleanSpec = p.path("/api/route-sample/after")
+                    .and().after(zonedDateTime);
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());

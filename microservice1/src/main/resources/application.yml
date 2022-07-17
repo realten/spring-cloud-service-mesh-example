@@ -1,10 +1,19 @@
-server:
-  port: 8081
-  shutdown: graceful
-
 spring:
   application:
     name: microservice1
+  profiles:
+    active: local
+
+--- # Local 환경
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+server:
+  port: 8081
+  shutdown: graceful
 
 eureka:
   instance:

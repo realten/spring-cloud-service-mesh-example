@@ -1,50 +1,48 @@
-package com.datasolution.msa.gateway.route;
+package com.datasolution.msa.gateway.route.sample;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.*;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.net.URI;
 import java.util.function.Function;
 
-@Slf4j
 @Configuration
-public class BetweenRoute {
+@Slf4j
+public class QueryRoute {
+    private String serverUri = "lb://microservice1";
+
     /**
-     * Between Route<br />
+     * query Route<br />
      * <br />
-     * 9시부터 18시까지 /api/*&#47;route-sample/between 으로 들어오는 경우<br />
+     * /api/route-sample/query 으로 들어오는 경우<br />
+     * QueryString에 param 값이 있는 경우<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
      * <br />
-     * URI : LoadBalancing to microservice1 application<br />
+     * URI : LoadBalancing to microservice QueryString value application<br />
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> betweenRoute() {
+    public Function<PredicateSpec, Buildable<Route>> queryRoute() {
         return p -> {
             // 조건절 정의
-            LocalDateTime afterDateTime = LocalDateTime.now().withHour(9).withMinute(0).withSecond(0).withNano(0);
-            LocalDateTime beforeDateTime = LocalDateTime.now().withHour(18).withMinute(0).withSecond(0).withNano(0);
-            ZonedDateTime afterZonedDateTime = ZonedDateTime.of(afterDateTime, ZoneId.of("Asia/Seoul"));
-            ZonedDateTime beforeZonedDateTime = ZonedDateTime.of(beforeDateTime, ZoneId.of("Asia/Seoul"));
-            BooleanSpec booleanSpec = p.path("/api/route-sample/between").and()
-                    .after(afterZonedDateTime).and()
-                    .before(beforeZonedDateTime);
+            BooleanSpec booleanSpec = p.path("/api/route-sample/query")
+                    .and().query("param");
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());
 
             //URI 정의
-            String uri = "";
-            uri = "lb://microservice1";
-            Buildable<Route> routeBuildable = filters.uri(uri);
+            log.info("serverUri - {}", serverUri);
+            Buildable<Route> routeBuildable = filters.uri(serverUri);
 
             return routeBuildable;
         };

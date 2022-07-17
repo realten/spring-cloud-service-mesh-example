@@ -16,21 +16,16 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/snapshot' }
-    maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-    set('springCloudVersion', "2021.0.3-SNAPSHOT")
+    set('springCloudVersion', "2021.0.3")
 }
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     /* Spring Boot WebFlux */
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
-    /* Spring Cloud Gateway */
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 
     /* Spring Cloud Netflix Eureka - Client*/
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'

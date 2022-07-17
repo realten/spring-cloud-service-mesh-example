@@ -1,4 +1,4 @@
-package com.datasolution.msa.gateway.route;
+package com.datasolution.msa.gateway.route.sample;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -10,33 +10,41 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import java.util.function.Function;
 
-@Slf4j
 @Configuration
-public class CookieRoute {
+@Slf4j
+public class WeightRoute {
+    /** ROUTE ID */
+    private String routeId;
+
     /**
-     * cookie Route<br />
+     * weight Route<br />
      * <br />
-     * /api/*&#47;route-sample/cookie 으로 들어오는 경우<br />
-     * Cookie 값에 cookie라는 name과 authinfo라는 값이 있는 경우<br />
+     * /api/route-sample/weight 으로 들어오는 경우<br />
+     * weight라는 그룹의 가중치 5<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
      * <br />
-     * URI : LoadBalancing to microservice1 application<br />
+     * URI<br />
+     *  - RouteId가 weight1 인 경우 LoadBalancing to microservice1 application<br />
+     *  - RouteId가 weight2 인 경우 LoadBalancing to microservice2 application<br />
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> cookieRoute() {
+    public Function<PredicateSpec, Buildable<Route>> weightRoute() {
+
         return p -> {
             // 조건절 정의
-            BooleanSpec booleanSpec = p.path("/api/route-sample/cookie").and()
-                    .cookie("cookie", "authinfo");
+            BooleanSpec booleanSpec = p.path("/api/route-sample/weight")
+                    .and().weight("weight", 5);
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());
 
             //URI 정의
-            String uri = "";
-            uri = "lb://microservice1";
+            String uri = "lb://microservice1";
+            if ("weight2".equals(routeId)) {
+                uri = "lb://microservice2";
+            }
             Buildable<Route> routeBuildable = filters.uri(uri);
 
             return routeBuildable;
@@ -54,6 +62,7 @@ public class CookieRoute {
         return (exchange, chain) -> {
             String path = exchange.getRequest().getURI().getPath();
             Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
+            routeId = route.getId();
             log.info("route-id - {}, path - {}", route.getId(), path);
             String rewritePath = path;
             log.info("rewritePath - {}", rewritePath);

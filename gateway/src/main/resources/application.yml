@@ -1,11 +1,24 @@
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: local
+
+--- # Local 환경
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  cloud:
+    gateway:
+      loadbalancer:
+        use404: false  # 인스턴스를 찾지 못하는 경우 404에러로 반환 여부
+
 # server.port - 클라이언트 포트번호
 server:
   port: 80
   shutdown: graceful
-
-spring:
-  application:
-    name: gateway
 
 eureka:
   instance:

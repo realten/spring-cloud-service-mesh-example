@@ -1,4 +1,4 @@
-package com.datasolution.msa.gateway.route;
+package com.datasolution.msa.gateway.route.sample;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -6,20 +6,21 @@ import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.*;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Slf4j
 @Configuration
-public class AfterRoute {
+public class MethodRoute {
     /**
-     * After Route<br />
+     * Method Route<br />
      * <br />
-     * 18시 이후 /api/*&#47;route-sample/after으로 들어오는 경우<br />
+     * /api/route-sample/method 으로 들어오는 경우<br />
+     * Method Type이 Post인 경우<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
      * <br />
@@ -27,12 +28,12 @@ public class AfterRoute {
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> afterRoute() {
+    public Function<PredicateSpec, Buildable<Route>> methodRoute() {
+        Map<String, String> map = new HashMap<>();
         return p -> {
             // 조건절 정의
-            LocalDateTime dateTime = LocalDateTime.now().withHour(18).withMinute(0).withSecond(0).withNano(0);
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("Asia/Seoul"));
-            BooleanSpec booleanSpec = p.path("/api/route-sample/after").and().after(zonedDateTime);
+            BooleanSpec booleanSpec = p.path("/api/route-sample/method")
+                    .and().method(HttpMethod.POST);
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());

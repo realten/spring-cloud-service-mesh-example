@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: frontservice
+  thymeleaf:
+    enabled: true
+    cache: false
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+  web:
+    resources:
+      static-locations: classpath:/static/
