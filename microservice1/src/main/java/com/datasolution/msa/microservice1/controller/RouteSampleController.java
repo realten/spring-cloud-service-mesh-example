@@ -93,5 +93,14 @@ public class RouteSampleController {
         return map;
     }
 
+    @GetMapping("/timeout")
+    public Map<String, Object> timoutRoute() throws InterruptedException {
+        Thread.sleep(5000);
+        Map<String, Object> map = new HashMap<>();
+        map.put("message", "microservice1 - timeoutRoute");
+        map.put("exec-time", LocalDateTimeUtils.now());
+        return map;
+    }
+
 
 }

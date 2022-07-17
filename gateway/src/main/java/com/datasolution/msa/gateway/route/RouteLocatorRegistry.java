@@ -23,6 +23,7 @@ public class RouteLocatorRegistry {
     private final QueryRoute queryRoute;
     private final RemoteAddrRoute remoteAddrRoute;
     private final WeightRoute weightRoute;
+    private final TimeoutRoute timeoutRoute;
 
 
     private final ABTestRoute abTestRoute;
@@ -53,7 +54,8 @@ public class RouteLocatorRegistry {
         //Weight
         routes.route("weight1", weightRoute.weightRoute());
         routes.route("weight2", weightRoute.weightRoute());
-
+        //Timeout
+        routes.route("timeout", timeoutRoute.timeoutRoute());
 
         //AB TEST
         routes.route("microservice1", abTestRoute.abTest("microservice1"));

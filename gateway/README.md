@@ -118,3 +118,4 @@ dependencies {
   ```
 
 ## Filter
+* Filter는 Order 값에 따라 동작하는 순서가 정해져있다.
