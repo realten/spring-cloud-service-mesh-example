@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: local
+
+--- # Local 환경
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  cloud:
+    gateway:
+      loadbalancer:
+        use404: false  # 인스턴스를 찾지 못하는 경우 404에러로 반환 여부
+
+# server.port - 클라이언트 포트번호
+server:
+  port: 80
+  shutdown: graceful
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}-${random.uuid}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+# Spring Cloud Gateway yml 설정 방법
+
+# spring.cloud.gateway - Spring Cloud Gateway 설정
+## routes.id - Route Id
+## routes.uri - Route Url Path
+## routes.predicates - HTTP 요청의 조건 정의
+## routes.predicates.Path - HTTP 요청의 Path 패턴 조건
+## routes.filters - HTTP 요청 또는 HTTP 응답에 대한 수정
+## routes.filters.RewritePath - HTTP 요청의 Path 패턴을 Rewrite
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: route1
+#          uri: http://localhost:8081
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - RewritePath=/api(?<segment>/?.*), /$\{segment}
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    gateway:
+      enabled: true
+  health:
+    circuitbreakers:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
