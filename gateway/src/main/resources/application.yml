@@ -17,7 +17,7 @@ spring:
 
 # server.port - 클라이언트 포트번호
 server:
-  port: 80
+  port: 8000
   shutdown: graceful
 
 eureka:
