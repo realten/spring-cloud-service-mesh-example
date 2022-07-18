@@ -119,3 +119,31 @@ dependencies {
 
 ## Filter
 * Filter는 Order 값에 따라 동작하는 순서가 정해져있다.
+* preGlobalFilter 
+* postGlobalFilter
+
+## Route ehdwjr emdfhr
+* 동적 등록
+```http request
+###
+POST http://localhost:8000/actuator/gateway/routes/asnyc-route
+Content-Type: application/json
+
+{
+  "route_id": "asnyc-route",
+  "predicates": ["Method=[POST]", "Path=/api/route-sample/asnyc-route"],
+  "filters": ["StripPrefix=1"],
+  "uri"; "lb://microservice1",
+  "order": 0
+}
+```
+* 등록 후 Refresh
+```http request
+###
+POST http://localhost:8000/actuator/gateway/refresh
+```
+* 등록 된 Route 삭제
+```http request
+###
+DELETE http://localhost:8000/actuator/gateway/routes/async-route
+```

@@ -8,7 +8,7 @@
 * spring cloud gateway 라이브러리를 사용한 Api Gateway Application
 * port : 8000
 
-## gateway
+## frontservice
 * 프론트 서비스 Application
 * port : 80
 * thymeleaf로 작성
@@ -20,3 +20,7 @@
 ## microservice2
 * 샘플소스에 보조적으로 사용되는 Application
 * port : 8082
+
+## database
+* h2 DB 실행 Application
+* port : 0

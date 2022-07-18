@@ -1,4 +1,4 @@
-package com.datasolution.msa.gateway.route.sample;
+package com.datasolution.msa.gateway.route;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -24,11 +24,21 @@ public class TimeoutRoute {
      * /api/route-sample/timeout 으로 들어오는 경우<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
-     * <br />
-     * Response Time out, Connect Time out 설정 : 2초<br />
-     *   metadata:
-     *     response-timeout: 2000
-     *     connect-timeout: 2000
+     * - Response Time out, Connect Time out 설정 : 2초<br />
+<pre>
+cloud:
+  gateway:
+    routes:
+      id: timeoutRoute
+      uri: http://localhost:8080
+      predicates:
+      - name: Path
+        args:
+          pattern: /delay/{timeout}
+      metadata:
+        response-timeout: 2000
+        connect-timeout: 2000
+</pre>
      * <br />
      * URI : LoadBalancing to microservice1 application<br />
      *
@@ -43,10 +53,6 @@ public class TimeoutRoute {
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());
 
-            // Timeout 설정 : milliseconds 단위
-            filters.metadata(RESPONSE_TIMEOUT_ATTR, 2000)
-                    .metadata(CONNECT_TIMEOUT_ATTR, 2000);
-
             //URI 정의
             String uri = "";
             uri = "lb://microservice1";
@@ -58,7 +64,11 @@ public class TimeoutRoute {
 
     private Function<GatewayFilterSpec, UriSpec> gatewayFilterSpecUriSpecFunction() {
         return gatewayFilterSpecUriSpecFunction -> {
-            gatewayFilterSpecUriSpecFunction.stripPrefix(1).filter(gatewayFilter());
+            gatewayFilterSpecUriSpecFunction.stripPrefix(1).filter(gatewayFilter())
+                    // Timeout 설정 : milliseconds 단위
+                    .metadata(RESPONSE_TIMEOUT_ATTR, 2000)
+                    .metadata(CONNECT_TIMEOUT_ATTR, 2000);
+
             return gatewayFilterSpecUriSpecFunction;
         };
     }

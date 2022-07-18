@@ -1,6 +1,15 @@
 package com.datasolution.msa.gateway.route;
 
-import com.datasolution.msa.gateway.route.sample.*;
+import com.datasolution.msa.gateway.route.sample.AfterRoute;
+import com.datasolution.msa.gateway.route.sample.BeforeRoute;
+import com.datasolution.msa.gateway.route.sample.BetweenRoute;
+import com.datasolution.msa.gateway.route.sample.CookieRoute;
+import com.datasolution.msa.gateway.route.sample.HeaderRoute;
+import com.datasolution.msa.gateway.route.sample.MethodRoute;
+import com.datasolution.msa.gateway.route.sample.PathRoute;
+import com.datasolution.msa.gateway.route.sample.QueryRoute;
+import com.datasolution.msa.gateway.route.sample.RemoteAddrRoute;
+import com.datasolution.msa.gateway.route.sample.WeightRoute;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -54,12 +63,12 @@ public class RouteLocatorRegistry {
         //Weight
         routes.route("weight1", weightRoute.weightRoute());
         routes.route("weight2", weightRoute.weightRoute());
-        //Timeout
-        routes.route("timeout", timeoutRoute.timeoutRoute());
 
         //AB TEST
         routes.route("microservice1", abTestRoute.abTest("microservice1"));
         routes.route("microservice2", abTestRoute.abTest("microservice2"));
+        //Timeout
+        routes.route("timeout", timeoutRoute.timeoutRoute());
 
         return routes.build();
     }

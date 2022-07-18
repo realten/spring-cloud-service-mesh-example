@@ -1,5 +1,6 @@
 package com.datasolution.msa.gateway.filter;
 
+import com.datasolution.msa.gateway.util.PrintUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -28,7 +29,7 @@ public class PostGlobalFilter implements GlobalFilter, Ordered {
         addList("Request Id - " + request.getId());
         addList("Request URI - " + request.getURI());
         addList("Request Method - " + request.getMethod());
-        printLog();
+        PrintUtil.printLog(logList, maxLength);
         return chain.filter(exchange);
     }
 
@@ -42,11 +43,5 @@ public class PostGlobalFilter implements GlobalFilter, Ordered {
             maxLength = str.length();
         }
         logList.add(str);
-    }
-
-    private void printLog() {
-        logList.stream().findFirst().ifPresent(e -> log.info("{}", "┌─ " + StringUtils.rightPad(e + " ", maxLength, "─") + "┐"));
-        logList.stream().skip(1).forEach(e -> log.info("{}", String.format("│ %-" + maxLength + "s │", e)));
-        log.info("{}", "└" + StringUtils.rightPad("", maxLength + 2, "─") + "┘");
     }
 }
