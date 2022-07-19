@@ -1,14 +1,10 @@
 package com.datasolution.msa.gateway.cors;
 
-import org.apache.http.HttpClientConnection;
-import org.springframework.cloud.gateway.config.HttpClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-
-import java.time.Duration;
 
 @Configuration
 public class CorsWebFilterConfiguration {

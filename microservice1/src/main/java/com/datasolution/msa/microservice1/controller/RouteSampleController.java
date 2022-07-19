@@ -90,10 +90,10 @@ public class RouteSampleController {
         return map;
     }
 
-    @GetMapping("/test")
-    public Map<String, Object> testRoute() {
+    @GetMapping("/weight")
+    public Map<String, Object> weightRoute() {
         Map<String, Object> map = new HashMap<>();
-        map.put("message", "microservice1 - testRoute");
+        map.put("message", "microservice1 - weightRoute");
         map.put("exec-time", LocalDateTimeUtils.now());
         return map;
     }

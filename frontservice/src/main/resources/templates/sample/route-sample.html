@@ -11,6 +11,7 @@
                 after();
                 before();
                 between();
+                cookie();
                 method();
             })
 
@@ -63,6 +64,26 @@
                 });
             }
 
+            function cookie() {
+                document.cookie = "cookie=authinfo;";
+                $.ajax({
+                    url: "http://localhost:8000/api/route-sample/cookie",
+                    headers: {
+                        Authorization: "[[${userVo.token}]]"
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function(result) {
+                        $("#cookie > .message").text("message : " + result['message']);
+                        $("#cookie > .exec-time").text("exec-time : " + result['exec-time']);
+                    },
+                    error: function() {
+                        $("#cookie").html("<p>수행 실패</p>");
+                    }
+                });
+            }
+
             function method() {
                 $.ajax({
                     url: "http://localhost:8000/api/route-sample/method",
@@ -89,6 +110,7 @@
 
         <div class="page-header">
             <h1>After</h1>
+            <p>url : http://localhost:8000/api/route-sample/after</p>
         </div>
         <div id="after">
             <p class="message"></p>
@@ -97,6 +119,7 @@
 
         <div class="page-header">
             <h1>Before</h1>
+            <p>url : http://localhost:8000/api/route-sample/before</p>
         </div>
         <div id="before">
             <p class="message"></p>
@@ -105,6 +128,7 @@
 
         <div class="page-header">
             <h1>Between</h1>
+            <p>url : http://localhost:8000/api/route-sample/between</p>
         </div>
         <div id="between">
             <p class="message"></p>
@@ -112,7 +136,18 @@
         </div>
 
         <div class="page-header">
+            <h1>Cookie</h1>
+            <p>url : http://localhost:8000/api/route-sample/cookie</p>
+        </div>
+        <div id="cookie">
+            <p class="message"></p>
+            <p class="exec-time"></p>
+        </div>
+
+        <div class="page-header">
             <h1>Method</h1>
+            <p>url : http://localhost:8000/api/route-sample/method</p>
+            <p>method : POST</p>
         </div>
         <div id="method">
             <p class="message"></p>

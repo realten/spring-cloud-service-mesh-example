@@ -75,14 +75,10 @@ public class RouteSampleController {
     }
 
     @GetMapping("/weight")
-    public Map<String, Object> abtestRoute() {
+    public Map<String, Object> weightRoute() {
         Map<String, Object> map = new HashMap<>();
-        map.put("message", "microservice2 - abtestRoute");
+        map.put("message", "microservice2 - weightRoute");
         map.put("exec-time", LocalDateTimeUtils.now());
         return map;
     }
-
-
-
-
 }

@@ -4,6 +4,7 @@ import com.datasolution.msa.gateway.security.JwtUtil;
 import com.datasolution.msa.gateway.util.PrintUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,9 @@ public class PreGlobalFilter implements GlobalFilter, Ordered {
     private List<String> logList = new ArrayList<>();
     private int maxLength = 0;
 
+    @Value("${auth.enabled}")
+    private String authEnabled;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
@@ -37,7 +41,7 @@ public class PreGlobalFilter implements GlobalFilter, Ordered {
         addList("Request Method - " + request.getMethod());
         PrintUtil.printLog(logList, maxLength);
 
-        if(!request.getURI().getPath().startsWith("/api/auth") && !this.checkAuthentication(request)) {
+        if("true".equals(authEnabled) && !request.getURI().getPath().startsWith("/api/auth") && !this.checkAuthentication(request)) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }

@@ -13,9 +13,6 @@ import java.util.function.Function;
 @Configuration
 @Slf4j
 public class WeightRoute {
-    /** ROUTE ID */
-    private String routeId;
-
     /**
      * weight Route<br />
      * <br />
@@ -30,7 +27,7 @@ public class WeightRoute {
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> weightRoute() {
+    public Function<PredicateSpec, Buildable<Route>> weightRoute(String routeId) {
 
         return p -> {
             // 조건절 정의
@@ -62,7 +59,6 @@ public class WeightRoute {
         return (exchange, chain) -> {
             String path = exchange.getRequest().getURI().getPath();
             Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
-            routeId = route.getId();
             log.info("route-id - {}, path - {}", route.getId(), path);
             String rewritePath = path;
             log.info("rewritePath - {}", rewritePath);
