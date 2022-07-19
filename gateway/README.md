@@ -181,6 +181,55 @@ dependencies {
         };
     }
     ```
+    
+### CircuitBreaker
+* 다음은 CircuitBreak를 적용하여 구성하는 방법에 대해 설명한다.
+  * 먼저 CircuitBreaker를 설정하는 Bean을 구성한다.
+    ```java
+    @Configuration
+    public class CustomCircuitBreaker {
+        @Bean
+        public CircuitBreaker customCircuitBreakerRegistry(CircuitBreakerRegistry circuitBreakerRegistry, CircuitBreakerConfigurationProperties circuitBreakerConfigurationProperties) {
+            CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
+                    .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
+                    .slidingWindowSize(10)
+                    .failureRateThreshold(30)
+                    .automaticTransitionFromOpenToHalfOpenEnabled(true)
+                    .build();
+            return circuitBreakerRegistry.circuitBreaker("customCircuitBreaker", circuitBreakerConfig);
+        }
+    }
+    ```
+    * CircuitBreaker 설정 입력 후 name은 `customCircuitBreaker`로 등록한다.
+
+  * Filter에서 등록된 CircuitBreaker를 불러온다.
+    ```java
+    private Function<GatewayFilterSpec, UriSpec> gatewayFilterSpecUriSpecFunction() {
+        return gatewayFilterSpecUriSpecFunction -> {
+            gatewayFilterSpecUriSpecFunction.stripPrefix(1).filter(gatewayFilter())
+                    .circuitBreaker(springCloudCircuitBreakerFilterFactoryConfigConsumer());
+            return gatewayFilterSpecUriSpecFunction;
+        };
+    }
+    ```
+    * GatewayFilterSpec에 circuitBreaker 메소드 호출 후 `SpringCloudCircuitBreakerFilterFactory`를 입력한다.
+  * CircuitBreaker 발생 시 다음 동작에 대해 작성한다.
+    ```java
+    public Consumer<SpringCloudCircuitBreakerFilterFactory.Config> springCloudCircuitBreakerFilterFactoryConfigConsumer() {
+        return springCloudCircuitBreakerFilterFactoryConfig -> {
+            SpringCloudCircuitBreakerFilterFactory.Config config = springCloudCircuitBreakerFilterFactoryConfig;
+            config.setName("customCircuitBraeker")
+                    .setFallbackUri("forward:/actuator/health");
+            List<HttpStatus> httpStatusList = new ArrayList<>();
+            httpStatusList.add(HttpStatus.NOT_FOUND);
+            for(HttpStatus httpStatus : httpStatusList) {
+                config.addStatusCode(String.valueOf(httpStatus.value()));
+            }
+        };
+    }
+    ```
+    * config.setName()을 통해 등록된 CircuitBreaker를 불러온다.
+    * CircuitBreaker 발생 시 FallBackURI는 "forward:/actuator/health"로 하도록 설정한다. 
 
 ## Timeout 설정
 * Timeout 설정에는 **Global 설정**과 **각 Route 설정**이 있다.
@@ -246,14 +295,14 @@ dependencies {
 * 동적 등록
 ```http request
 ###
-POST http://localhost:8000/actuator/gateway/routes/asnyc-route
+POST http://localhost:8000/actuator/gateway/routes/asnyc
 Content-Type: application/json
 
 {
-    "route_id": "asnyc-route",
-    "predicates": ["Method=[POST]", "Path=/api/route-sample/asnyc-route"],
+    "route_id": "async",
+    "predicates": ["Method=[POST]", "Path=/api/route-sample/async"],
     "filters": ["StripPrefix=1"],
-    "uri"; "lb://microservice1",
+    "uri": "lb://microservice1",
     "order": 0
 }
 ```
@@ -265,7 +314,7 @@ POST http://localhost:8000/actuator/gateway/refresh
 * 등록 된 Route 삭제
 ```http request
 ###
-DELETE http://localhost:8000/actuator/gateway/routes/async-route
+DELETE http://localhost:8000/actuator/gateway/routes/async
 ```
 
 ## 참조
