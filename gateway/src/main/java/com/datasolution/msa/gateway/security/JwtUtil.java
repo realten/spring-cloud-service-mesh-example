@@ -1,8 +1,6 @@
-package com.datasolution.msa.microservice1.security;
+package com.datasolution.msa.gateway.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -20,33 +18,8 @@ import java.util.UUID;
  */
 @Slf4j
 public class JwtUtil {
-    private static String SECRET_KEY = "datasolution";
-    private static long tokenValidMilisecond = 1000L * 60 * 2;  //1000 * 60 = 1초
-
-    /**
-     * Json Web Token을 생성한다.
-     *
-     * @param params 속성 정보
-     * @return Token 값
-     */
-    public String createToken(Map<String, Object> params) {
-        String jwtKey = new SigningKeyResolver().encryptionSHA256(SECRET_KEY);
-        Key key = Keys.hmacShaKeyFor(jwtKey.getBytes());
-
-        Claims claims = Jwts.claims()
-                .setId(UUID.randomUUID().toString())    //토큰 ID
-                .setIssuedAt(new Date(System.currentTimeMillis()))  //발급 시간
-                .setExpiration(new Date(System.currentTimeMillis() + tokenValidMilisecond)); //만료시간
-
-        String jws = Jwts.builder()
-                .setHeaderParam(JwsHeader.KEY_ID, SECRET_KEY)    //JWT HEADER - SECRET_KEY
-                .setClaims(claims)                               //속성 정보
-                .signWith(key, SignatureAlgorithm.HS256)         //HMAC using SHA-256 적용
-                .compact();
-        log.info("key : Bearer {}", jws);
-
-        return "Bearer " + jws;
-    }
+    private static final String SECRET_KEY = "datasolution";
+    private static final long tokenValidMilisecond = 1000L * 60 * 2;  //1000 * 60 = 1초
 
     /**
      * 받아온 Json Web Token 키 정보를 검증한다.
@@ -54,7 +27,7 @@ public class JwtUtil {
      * @param authorizationValue
      * @return Claims 정보
      */
-    public Jws<Claims> verifyToken(String authorizationValue) throws Exception {
+    public static Jws<Claims> verifyToken(String authorizationValue) throws Exception {
         log.info("authorizationValue = {}", authorizationValue);
 
         /* 인증 값 검증 */
