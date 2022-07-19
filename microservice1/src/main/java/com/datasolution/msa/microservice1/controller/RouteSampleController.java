@@ -107,5 +107,12 @@ public class RouteSampleController {
         return map;
     }
 
+    @PostMapping("/async")
+    public Map<String, Object> asyncRoute() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("message", "microservice1 - asyncRoute");
+        map.put("exec-time", LocalDateTimeUtils.now());
+        return map;
+    }
 
 }
