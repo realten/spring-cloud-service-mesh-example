@@ -1,31 +1,32 @@
 
 ###
-GET http://localhost/api/route-sample/after
+GET http://localhost:8000/api/route-sample/after
 
 <> 2022-07-05T214407.200.json
 
 ###
-GET http://localhost/api/route-sample/before
+GET http://localhost:8000/api/route-sample/before
 
 ###
-GET http://localhost/api/route-sample/between
+GET http://localhost:8000/api/route-sample/between
+Authorization: Bearer eyJraWQiOiJkYXRhc29sdXRpb24iLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkYzUxYWE2Yy03NjBiLTRjNjktODY2NC04YjU4Y2E1ODQyMTciLCJpYXQiOjE2NTgxODk3NTMsImV4cCI6MTY1ODE4OTg3M30.ljuOLnSzU1Fpo0IjBYzrOILnhzDxJSh2e7U0KoGmU1c
 
 ###
-GET http://localhost/api/route-sample/cookie
+GET http://localhost:8000/api/route-sample/cookie
 Cookie: cookie=authinfo
 
 <> 2022-07-06T232950.200.json
 <> 2022-07-05T215953.200.json
 
 ###
-GET http://localhost/api/route-sample/header
+GET http://localhost:8000/api/route-sample/header
 Authorization: headerInfo
 
 ###
-GET http://localhost/api/route-sample/remoteAddr
+GET http://localhost:8000/api/route-sample/remoteAddr
 
 ###
-GET http://localhost/api/route-sample/query?param=hi
+GET http://localhost:8000/api/route-sample/query?param=hi
 
 <> 2022-07-06T232749.200.json
 
@@ -43,4 +44,13 @@ GET http://localhost:8000/api/version-check/getVersion
 
 ### 토큰 값 입력
 GET http://localhost:8000/api/version-check/getVersion
-Authorization: Bearer eyJraWQiOiJkYXRhc29sdXRpb24iLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmNkY2MzOS1lMzU4LTRmN2UtYmUzNy01ZWJhMzdkNmJiMTgiLCJpYXQiOjE2NTgxNTkzNDEsImV4cCI6MTY1ODE1OTQ2MX0.ji5q-9d0acALoEvJ1L02Q0hwSYDvzhAi7iZhXSEykiQ
+Authorization: Bearer eyJraWQiOiJkYXRhc29sdXRpb24iLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzZmUxMWE4My1lODA1LTQzYzUtODBmOS1lMDAxN2NmNDAyNDYiLCJpYXQiOjE2NTgxNTk2NDUsImV4cCI6MTY1ODE1OTc2NX0.lJZgiYAFBk2DmufzlslrvoIqKkgyRglXZtwiRqDfgUE
+
+###
+POST http://localhost:8000/api/auth/login
+Content-Type: application/json
+
+{
+  "id" : "realten",
+  "password" : "qwer1234!"
+}

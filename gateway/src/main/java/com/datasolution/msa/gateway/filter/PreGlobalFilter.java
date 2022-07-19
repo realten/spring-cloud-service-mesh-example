@@ -37,7 +37,7 @@ public class PreGlobalFilter implements GlobalFilter, Ordered {
         addList("Request Method - " + request.getMethod());
         PrintUtil.printLog(logList, maxLength);
 
-        if(!this.checkAuthentication(request)) {
+        if(!request.getURI().getPath().startsWith("/api/auth") && !this.checkAuthentication(request)) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }

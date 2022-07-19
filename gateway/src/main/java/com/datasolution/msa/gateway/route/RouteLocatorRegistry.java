@@ -32,10 +32,11 @@ public class RouteLocatorRegistry {
     private final QueryRoute queryRoute;
     private final RemoteAddrRoute remoteAddrRoute;
     private final WeightRoute weightRoute;
-    private final TimeoutRoute timeoutRoute;
 
 
+    private final AuthRoute authRoute;
     private final ABTestRoute abTestRoute;
+    private final TimeoutRoute timeoutRoute;
 
 
     @Bean
@@ -64,6 +65,8 @@ public class RouteLocatorRegistry {
         routes.route("weight1", weightRoute.weightRoute());
         routes.route("weight2", weightRoute.weightRoute());
 
+        //Auth
+        routes.route("auth", authRoute.authRoute());
         //AB TEST
         routes.route("microservice1", abTestRoute.abTest("microservice1"));
         routes.route("microservice2", abTestRoute.abTest("microservice2"));

@@ -8,8 +8,18 @@
     <th:block layout:fragment="script">
         <script>
             $(document).ready(function() {
+                after();
+                before();
+                between();
+                method();
+            })
+
+            function after() {
                 $.ajax({
                     url: "http://localhost:8000/api/route-sample/after",
+                    headers: {
+                        Authorization: "[[${userVo.token}]]"
+                    },
                     success: function(result) {
                         $("#after > .message").text("message : " + result['message']);
                         $("#after > .exec-time").text("exec-time : " + result['exec-time']);
@@ -18,9 +28,14 @@
                         $("#after").html("<p>수행 실패</p>");
                     }
                 });
+            }
 
+            function before() {
                 $.ajax({
                     url: "http://localhost:8000/api/route-sample/before",
+                    headers: {
+                        Authorization: "[[${userVo.token}]]"
+                    },
                     success: function(result) {
                         $("#before > .message").text("message : " + result['message']);
                         $("#before > .exec-time").text("exec-time : " + result['exec-time']);
@@ -30,9 +45,14 @@
                     }
 
                 });
+            }
 
+            function between() {
                 $.ajax({
                     url: "http://localhost:8000/api/route-sample/between",
+                    headers: {
+                        Authorization: "[[${userVo.token}]]"
+                    },
                     success: function(result) {
                         $("#between > .message").text("message : " + result['message']);
                         $("#between > .exec-time").text("exec-time : " + result['exec-time']);
@@ -40,26 +60,29 @@
                     error: function() {
                         $("#between").html("<p>수행 실패</p>");
                     }
-                })
+                });
+            }
 
+            function method() {
                 $.ajax({
                     url: "http://localhost:8000/api/route-sample/method",
+                    headers: {
+                        Authorization: "[[${userVo.token}]]"
+                    },
                     method: "POST",
                     success: function(result) {
-                        $("#between > .message").text("message : " + result['message']);
-                        $("#between > .exec-time").text("exec-time : " + result['exec-time']);
+                        $("#method > .message").text("message : " + result['message']);
+                        $("#method > .exec-time").text("exec-time : " + result['exec-time']);
                     },
                     error: function() {
-                        $("#between").html("<p>수행 실패</p>");
+                        $("#method").html("<p>수행 실패</p>");
                     }
-                })
-            })
+                });
+            }
         </script>
     </th:block>
 
     <th:block layout:fragment="content">
-
-
         <div class="jumbotron">
             <h1>Route Sample</h1>
         </div>

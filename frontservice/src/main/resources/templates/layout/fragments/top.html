@@ -18,6 +18,14 @@
                     <li><a href="/route-sample">ROUTE-SAMPLE</a></li>
                     <li><a href="/style-sample">STYLE-SAMPLE</a></li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <th:block th:if="${userVo.loginYn == false}">
+                        <li><a href="/auth/login">LOGIN</a></li>
+                    </th:block>
+                    <th:block th:unless="${userVo.loginYn == false}">
+                        <li><a href="/auth/logout">LOGOUT</a></li>
+                    </th:block>
+                </ul>
             </div><!--/.nav-collapse -->
         </div>
     </nav>
