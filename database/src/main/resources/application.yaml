@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:tcp://localhost:9091/./scsm
+      driver-class-name: org.h2.Driver
+      username: sa
+
+#서버 접속은 하지 않기 때문에 랜덤포트 생성
+server:
+  port: 0

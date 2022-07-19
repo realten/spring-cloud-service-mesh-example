@@ -1,4 +1,4 @@
-package com.datasolution.msa.gateway.route.sample;
+package com.datasolution.msa.gateway.route;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -12,40 +12,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.springframework.cloud.gateway.support.RouteMetadataUtils.CONNECT_TIMEOUT_ATTR;
-import static org.springframework.cloud.gateway.support.RouteMetadataUtils.RESPONSE_TIMEOUT_ATTR;
-
 @Slf4j
 @Configuration
-public class TimeoutRoute {
+public class AuthRoute {
     /**
-     * Timeout Route<br />
+     * Auth Route<br />
      * <br />
-     * /api/route-sample/timeout 으로 들어오는 경우<br />
+     * /api/auth/** 으로 들어오는 경우<br />
      * <br />
      * Filter는 gatewayFilter 적용<br />
-     * <br />
-     * Response Time out, Connect Time out 설정 : 2초<br />
-     *   metadata:
-     *     response-timeout: 2000
-     *     connect-timeout: 2000
+     * - Response Time out, Connect Time out 설정 : 2초<br />
      * <br />
      * URI : LoadBalancing to microservice1 application<br />
      *
      * @return
      */
-    public Function<PredicateSpec, Buildable<Route>> timeoutRoute() {
+    public Function<PredicateSpec, Buildable<Route>> authRoute() {
         Map<String, String> map = new HashMap<>();
         return p -> {
             // 조건절 정의
-            BooleanSpec booleanSpec = p.path("/api/route-sample/timeout");
+            BooleanSpec booleanSpec = p.path("/api/auth/**");
 
             //filter 정의
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());
-
-            // Timeout 설정 : milliseconds 단위
-            filters.metadata(RESPONSE_TIMEOUT_ATTR, 2000)
-                    .metadata(CONNECT_TIMEOUT_ATTR, 2000);
 
             //URI 정의
             String uri = "";

@@ -1,10 +1,7 @@
 package com.datasolution.msa.microservice1.controller;
 
 import com.datasolution.msa.microservice1.utils.LocalDateTimeUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +53,14 @@ public class RouteSampleController {
     public Map<String, Object> headerRoute() {
         Map<String, Object> map = new HashMap<>();
         map.put("message", "microservice1 - headerRoute");
+        map.put("exec-time", LocalDateTimeUtils.now());
+        return map;
+    }
+
+    @PostMapping("/method")
+    public Map<String, Object> methodRoute() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("message", "microservice1 - methodRoute");
         map.put("exec-time", LocalDateTimeUtils.now());
         return map;
     }

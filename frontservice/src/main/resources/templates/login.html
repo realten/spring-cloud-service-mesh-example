@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <!-- 공통 헤드-->
+    <th:block th:replace="/layout/fragments/head :: headFragment"></th:block>
+
+    <body>
+
+        <div class="container">
+
+            <form class="form-signin" action="/auth/login" method="post" enctype="application/x-www-form-urlencoded">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <label for="id" class="sr-only">Id</label>
+                <input type="text" id="id" class="form-control" placeholder="Id" required autofocus>
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Password" required>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+
+        </div> <!-- /container -->
+    </body>
+</html>
