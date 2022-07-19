@@ -62,8 +62,8 @@ public class RouteLocatorRegistry {
         //RemoteAddr
         routes.route("remoteAddr", remoteAddrRoute.remoteAddrRoute());
         //Weight
-        routes.route("weight1", weightRoute.weightRoute());
-        routes.route("weight2", weightRoute.weightRoute());
+        routes.route("weight1", weightRoute.weightRoute("weight1"));
+        routes.route("weight2", weightRoute.weightRoute("weight2"));
 
         //Auth
         routes.route("auth", authRoute.authRoute());

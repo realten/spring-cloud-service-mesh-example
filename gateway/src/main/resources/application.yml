@@ -67,3 +67,6 @@ resilience4j:
     configs:
       default:
         registerHealthIndicator: true
+
+auth:
+  enabled: false;

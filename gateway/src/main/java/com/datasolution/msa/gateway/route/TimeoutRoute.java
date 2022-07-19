@@ -26,18 +26,19 @@ public class TimeoutRoute {
      * Filter는 gatewayFilter 적용<br />
      * - Response Time out, Connect Time out 설정 : 2초<br />
 <pre>
-cloud:
-  gateway:
-    routes:
-      id: timeoutRoute
-      uri: http://localhost:8080
-      predicates:
-      - name: Path
-        args:
-          pattern: /delay/{timeout}
-      metadata:
-        response-timeout: 2000
-        connect-timeout: 2000
+spring:
+  cloud:
+    gateway:
+      routes:
+        id: timeoutRoute
+        uri: http://localhost:8080
+        predicates:
+        - name: Path
+          args:
+            pattern: /delay/{timeout}
+        metadata:
+          response-timeout: 2000
+          connect-timeout: 2000
 </pre>
      * <br />
      * URI : LoadBalancing to microservice1 application<br />
@@ -66,8 +67,8 @@ cloud:
         return gatewayFilterSpecUriSpecFunction -> {
             gatewayFilterSpecUriSpecFunction.stripPrefix(1).filter(gatewayFilter())
                     // Timeout 설정 : milliseconds 단위
-                    .metadata(RESPONSE_TIMEOUT_ATTR, 2000)
-                    .metadata(CONNECT_TIMEOUT_ATTR, 2000);
+                    .metadata(CONNECT_TIMEOUT_ATTR, 2000)
+                    .metadata(RESPONSE_TIMEOUT_ATTR, 2000);
 
             return gatewayFilterSpecUriSpecFunction;
         };
