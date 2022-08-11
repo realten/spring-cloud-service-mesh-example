@@ -8,7 +8,7 @@ dependencies {
 }
 ```
 
-## Route 구성요소
+## Spring Cloud Gateway 구성요소
 * Route
   * 고유 ID, 목적지 URI, Predicate, Filter로 구성된 요소
   * Gateway로 요청된 URI의 조건이 참일 경우 매핑된 해당 경로로 매칭

@@ -10,17 +10,22 @@
 
 ## frontservice
 * 프론트 서비스 Application
-* port : 80
+* port : 8080
 * thymeleaf로 작성
+
+## authservice
+* 인증 서비스 Application
+* port : 8081
+
 
 ## microservice1
 * 샘플소스에 주로 사용되는 Application
-* port : 8081
+* port : 8082
 
 ## microservice2
 * 샘플소스에 보조적으로 사용되는 Application
-* port : 8082
+* port : 8083
 
 ## database
 * h2 DB 실행 Application
-* port : 0
+* port : 0 (랜덤 포트로 생성)

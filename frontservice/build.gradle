@@ -31,12 +31,16 @@ dependencies {
 
     /* Spring Boot Web */
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
     /* Thymeleaf */
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
     /* Spring Boot WebFlux */
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    /* JSON - Gson */
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     /* Lombok */
     compileOnly 'org.projectlombok:lombok'
@@ -49,6 +53,11 @@ dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
+}
+
+bootJar {
+    processResources.exclude('/static/**')
+
 }
 
 test {

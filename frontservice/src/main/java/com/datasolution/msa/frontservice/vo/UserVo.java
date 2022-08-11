@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class UserVo {
     private boolean loginYn;
-    private String id;
+    private String username;
     private String token;
 }

@@ -1,6 +1,5 @@
 package com.datasolution.msa.frontservice.controller;
 
-import com.datasolution.msa.frontservice.vo.LoginVo;
 import com.datasolution.msa.frontservice.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

@@ -38,7 +38,7 @@ public class AuthRoute {
 
             //URI 정의
             String uri = "";
-            uri = "lb://microservice1";
+            uri = "lb://authservice";
             Buildable<Route> routeBuildable = filters.uri(uri);
 
             return routeBuildable;

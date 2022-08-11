@@ -1,15 +1,6 @@
 spring:
   application:
     name: microservice1
-  profiles:
-    active: local
-
---- # Local 환경
-
-spring:
-  config:
-    activate:
-      on-profile: local
   datasource:
     hikari:
       jdbc-url: jdbc:h2:tcp://localhost:9091/./scsm
@@ -20,7 +11,7 @@ mybatis:
   mapper-locations: classpath:/mappers/**/*.xml
 
 server:
-  port: 8081
+  port: 8082
   shutdown: graceful
 
 eureka:
@@ -37,3 +28,7 @@ management:
     web:
       exposure:
         include: "*"
+
+logging:
+  level:
+    root: info
