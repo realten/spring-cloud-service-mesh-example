@@ -17,8 +17,6 @@ import java.util.function.Function;
 @Configuration
 @Slf4j
 public class QueryRoute {
-    private String serverUri = "lb://microservice1";
-
     /**
      * query Route<br />
      * <br />
@@ -41,8 +39,8 @@ public class QueryRoute {
             UriSpec filters = booleanSpec.filters(gatewayFilterSpecUriSpecFunction());
 
             //URI 정의
-            log.info("serverUri - {}", serverUri);
-            Buildable<Route> routeBuildable = filters.uri(serverUri);
+            String uri = "lb://microservice1";
+            Buildable<Route> routeBuildable = filters.uri(uri);
 
             return routeBuildable;
         };

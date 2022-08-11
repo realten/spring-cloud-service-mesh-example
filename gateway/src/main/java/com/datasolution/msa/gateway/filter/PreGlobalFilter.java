@@ -39,12 +39,13 @@ public class PreGlobalFilter implements GlobalFilter, Ordered {
         addList("Request Id - " + request.getId());
         addList("Request URI - " + request.getURI());
         addList("Request Method - " + request.getMethod());
+        addList("Request Body - " + request.getBody());
         PrintUtil.printLog(logList, maxLength);
 
-        if("true".equals(authEnabled) && !request.getURI().getPath().startsWith("/api/auth") && !this.checkAuthentication(request)) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return exchange.getResponse().setComplete();
-        }
+//        if("true".equals(authEnabled) && !request.getURI().getPath().startsWith("/api/auth") && !this.checkAuthentication(request)) {
+//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return exchange.getResponse().setComplete();
+//        }
 
         return chain.filter(exchange);
     }

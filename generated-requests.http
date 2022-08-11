@@ -74,3 +74,16 @@ POST http://localhost:8000/api/route-sample/async
 
 ### Route 삭제
 DELETE http://localhost:8000/actuator/gateway/routes/async
+
+
+###
+POST http://localhost:8081/auth/login
+Content-Type: application/json
+
+{
+  "username" : "realten",
+  "password" : "qwer1234!"
+}
+
+###
+GET http://localhost:8081/test
