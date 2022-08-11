@@ -7,6 +7,3 @@ spring:
     encoding: UTF-8
     prefix: classpath:/templates/
     suffix: .html
-  web:
-    resources:
-      static-locations: classpath:/static/

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datasolution.msa.authservice">
+    <select id="selectUserInfo" parameterType="java.lang.String" resultType="com.datasolution.msa.authservice.security.UserVo">
+        SELECT SEQ
+             , USERNAME
+             , PASSWORD
+             , (
+               SELECT LISTAGG(ROLE, ',')
+                 FROM AUTHORITY
+                WHERE USERNAME = #{username}
+                GROUP BY USERNAME
+                ) as authorities
+             , ACCOUNTNONEXPIRED
+             , ACCOUNTNONLOCKED
+             , CREDENTIALSNONEXPIRED
+             , ENABLED
+        FROM USERS
+        WHERE USERNAME = #{username}
+    </select>
+
+    <select id="selectUserAuthorityList" parameterType="java.lang.String" resultType="java.util.ArrayList">
+        SELECT ROLE AS authority
+          FROM AUTHORITY
+         --WHERE USERNAME = #{username}
+    </select>
+</mapper>

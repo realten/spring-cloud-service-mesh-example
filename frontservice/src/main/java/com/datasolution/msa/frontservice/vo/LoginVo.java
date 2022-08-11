@@ -8,6 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class LoginVo {
-    private String id;
+    private String username;
     private String password;
 }
